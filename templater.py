@@ -1,6 +1,7 @@
 import sys
+import os
 import configparser
-from jinja2 import Template, Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader
 
 
 def load_config(file):
@@ -28,7 +29,9 @@ def render_template(dir_name, file_name, variables_dict):
 
 if __name__ == '__main__':
     template_vars = load_config(sys.argv[1])
-
+    dirs = os.listdir(path='.')
     for item in template_vars:
-        print("Processing in directory:", item)
-        print(render_template(item,))
+        if item in dirs:
+            print("Processing in directory:", item)
+            for file in os.listdir(item):
+                print(render_template(item, file, template_vars[item]))
