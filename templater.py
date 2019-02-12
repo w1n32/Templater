@@ -1,5 +1,6 @@
 import sys
 import configparser
+from jinja2 import Template, Environment, FileSystemLoader
 
 
 def load_config(file):
@@ -17,5 +18,17 @@ def load_config(file):
     return config_dict
 
 
+def render_template(dir_name, file_name, variables_dict):
+    print("Render template...")
+    file_loader = FileSystemLoader(dir_name)
+    env = Environment(loader=file_loader)
+    template = env.get_template(file_name)
+    return template.render(tv=variables_dict)
+
+
 if __name__ == '__main__':
-    print(load_config(sys.argv[1]))
+    template_vars = load_config(sys.argv[1])
+
+    for item in template_vars:
+        print("Processing in directory:", item)
+        print(render_template(item,))
